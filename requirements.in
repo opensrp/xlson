@@ -1,0 +1,9 @@
+.
+black
+coverage
+flake8
+ipdb
+mypy
+pip-tools
+pre-commit
+pylint

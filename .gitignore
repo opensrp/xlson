@@ -1,0 +1,10 @@
+.DS_Store
+.coverage
+.eggs/
+.mypy_cache/
+.vscode
+__pycache__
+build/
+dist/
+htmlcov/
+xlson.egg-info/
