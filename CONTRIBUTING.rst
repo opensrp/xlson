@@ -4,13 +4,13 @@ Contributing to xlson
 
 Use the latest python 3 release, preferably python 3.6+.
 
-Install required packages:
+Install required packages::
 
    pip install pip-tools
    pip-sync
    pre-commit install
 
-Before submitting a pull request, run tests:
+Before submitting a pull request, run tests::
 
    python setup.py test
 
