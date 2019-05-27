@@ -13,7 +13,7 @@ jobs:
           name: Install dependencies
           command: |
             pip install -r requirements.txt --user
-            pip install -e '.[d]'
+            pip install -e '.' --user
             pip install codecov --user
             /home/circleci/.local/bin/codecov
       - run:
