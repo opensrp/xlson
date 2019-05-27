@@ -47,10 +47,7 @@ class NativeFormField(dict):
         assert NAME in kwargs, "'%s' is a required field." % KEY
         elements: Dict[str, Any] = {}
         for key, default in self.FIELDS.items():
-            try:
-                elements[key] = kwargs.get(key, default())
-            except TypeError:
-                elements.update({key: default})
+            elements[key] = kwargs.get(key, default())
 
         elements[KEY] = kwargs[NAME]
         elements[TYPE] = self.field_type
