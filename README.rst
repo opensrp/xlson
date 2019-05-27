@@ -2,10 +2,18 @@
 OpenSRP XLSForm to native form JSON converter
 =============================================
 
-|black|
+|black| |circleci| |codecov|
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/python/black
+
+.. |circleci| image:: https://circleci.com/gh/OpenSRP/xlson.svg?style=svg
+    :target: https://circleci.com/gh/OpenSRP/xlson
+
+.. |codecov| image:: https://codecov.io/github/OpenSRP/xlson/branch/master/graph/badge.svg
+    :target: https://codecov.io/github/OpenSRP/xlson
+
+.. _CONTRIBUTING.rst: https://github.com/OpenSRP/xlson/blob/master/CONTRIBUTING.rst
 
 xlson - Converts an OpenSRP data dictionary XLSForm into native form JSON.
 
@@ -53,4 +61,4 @@ From the sample XLSForm below::
 Contributing to *xlson*.
 ########################
 
-See `CONTRIBUTING.rst`_ for details.
+See CONTRIBUTING.rst_ for details.
