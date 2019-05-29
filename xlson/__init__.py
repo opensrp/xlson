@@ -28,6 +28,7 @@ class QuestionTypes(Enum):
 
     TEXT = "text"
     GROUP = "group"
+    PHOTO = "photo"
 
 
 class NativeFormField(dict):
@@ -71,6 +72,21 @@ class EditTextField(NativeFormField):
         super(EditTextField, self).__init__(**params)
 
 
+class ChooseImageField(NativeFormField):
+    """Native form choose_image field."""
+
+    field_type: str = "choose_image"
+
+    FIELDS = NativeFormField.FIELDS.copy()
+    FIELDS.update({"uploadButtonText": str})
+
+    def __init__(self, **kwargs: Dict) -> None:
+        assert LABEL in kwargs, "'%s' is a required field." % LABEL
+        params = kwargs.copy()
+        params["uploadButtonText"] = kwargs.pop(LABEL)
+        super(ChooseImageField, self).__init__(**params)
+
+
 class Step(dict):
     """Native form step section."""
 
@@ -92,10 +108,11 @@ def build_field(options: Dict) -> Dict:
     """Build native field."""
     field: Dict = {}
     if options[TYPE] == QuestionTypes.TEXT.value:
-        params = options.copy()
-        field = EditTextField(**params)
+        field = EditTextField(**options)
     elif options[TYPE] == QuestionTypes.GROUP.value:
         field = {options[NAME]: Step(**options)}
+    elif options[TYPE] == QuestionTypes.PHOTO.value:
+        field = ChooseImageField(**options)
 
     return field
 
