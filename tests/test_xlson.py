@@ -138,6 +138,21 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_gps_field(self) -> None:
+        """Test xlson.build_field() - returns a native form gps field dict."""
+        options = {"name": "user_gps", "label": "GPS", "type": "geopoint"}
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_gps",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "openmrs_entity_parent": "",
+                "openmrs_data_type": "text",
+                "type": "gps",
+            },
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()
