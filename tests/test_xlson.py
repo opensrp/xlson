@@ -103,6 +103,25 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_choose_image_field(self) -> None:
+        """Test xlson.build_field() - returns a native form choose_image field dict"""
+        options = {
+            "name": "user_image",
+            "label": "Take a photo of the child.",
+            "type": "photo",
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "uploadButtonText": options["label"],
+                "key": options["name"],
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "openmrs_entity_parent": "",
+                "type": "choose_image",
+            },
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()
