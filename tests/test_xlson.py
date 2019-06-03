@@ -122,6 +122,22 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_number_field(self) -> None:
+        """Test xlson.build_field() - returns a native form integer field dict"""
+        options = {"name": "user_age", "label": "User age", "type": "integer"}
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_age",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "edit_text",
+                "hint": "User age",
+                "edit_type": "number",
+            },
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()
