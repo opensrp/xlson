@@ -15,6 +15,8 @@ OpenSRP XLSForm to native form JSON converter
 
 .. _CONTRIBUTING.rst: https://github.com/OpenSRP/xlson/blob/master/CONTRIBUTING.rst
 
+.. _specifications.rst: https://github.com/OpenSRP/xlson/blob/master/docs/specifications.rst
+
 xlson - Converts an OpenSRP data dictionary XLSForm into native form JSON.
 
 ----------------------
@@ -50,13 +52,19 @@ Usage
        }
    }
 
-From the sample XLSForm below::
+From the sample XLSForm below:
 
-   | survey   |
-   |          | type        | name       | label                   |
-   |          | begin group | step1      | Patient Information     |
-   |          | text        | first_name  | What's your first name? |
-   |          | end group   |            |                         |
++-------------+------------+--------------------------+
+| type        | name       | label                    |
++=============+============+==========================+
+| begin group | step1      | Patient Information      |
++-------------+------------+--------------------------+
+| text        | first_name | What's your first name?  |
++-------------+------------+--------------------------+
+| end group   |            |                          |
++-------------+------------+--------------------------+
+
+See more on ``xlson`` specifications.rst_.
 
 Contributing to ``xlson``.
 ##########################
