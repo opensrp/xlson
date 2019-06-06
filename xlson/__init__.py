@@ -31,6 +31,7 @@ class QuestionTypes(Enum):
     PHOTO = "photo"
     INTEGER = "integer"
     GPS = "geopoint"
+    BARCODE = "barcode"
 
 
 class NativeFormField(dict):
@@ -86,6 +87,7 @@ class ChooseImageField(NativeFormField):
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         params = kwargs.copy()
         params["uploadButtonText"] = params.pop(LABEL)
+
         super(ChooseImageField, self).__init__(**params)
 
 
@@ -123,6 +125,24 @@ class GpsField(NativeFormField):
         super(GpsField, self).__init__(**params)
 
 
+class BarcodeField(NativeFormField):
+    """Native form barcode field."""
+
+    field_type: str = "barcode"
+
+    FIELDS = NativeFormField.FIELDS.copy()
+    FIELDS.update({"scanButtonText": str, "barcode_type": str, "hint": str})
+
+    def __init__(self, **kwargs: Dict) -> None:
+        assert LABEL in kwargs, "'%s' is a required field." % LABEL
+        params: Dict[str, Any] = kwargs.copy()
+        params["scanButtonText"] = params.get(HINT)
+        params["barcode_type"] = "qrcode"
+        params[HINT] = params.pop(LABEL)
+
+        super(BarcodeField, self).__init__(**params)
+
+
 class Step(dict):
     """Native form step section."""
 
@@ -153,6 +173,8 @@ def build_field(options: Dict) -> Dict:
         field = IntegerField(**options)
     elif options[TYPE] == QuestionTypes.GPS.value:
         field = GpsField(**options)
+    elif options[TYPE] == QuestionTypes.BARCODE.value:
+        field = BarcodeField(**options)
 
     return field
 
