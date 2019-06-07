@@ -223,7 +223,7 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
         )
 
     def test_required_field(self) -> None:
-        """Test xlson.build_field() - returns a native form required field dict"""
+        """Test xlson.build_field() - returns a native form required field dict."""
         options = {
             "name": "first_name",
             "label": "What's your name?",
@@ -294,6 +294,34 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                     "somber": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                 },
             },  # noqa
+        )
+
+    def test_constraint_field_with_regex_value(self) -> None:
+        """Test xlson.build_field() - returns a native form constraint field dict."""
+        options = {
+            "name": "user_first_name",
+            "label": "User First name",
+            "type": "text",
+            "bind": {
+                "jr:constraintMsg": "Please enter a valid name.",
+                "constraint": "regex(., '[A-Za-z\\s\\.\\-]*')",
+            },
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_first_name",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "edit_text",
+                "hint": "User First name",
+                "edit_type": "name",
+                "v_regex": {
+                    "value": "[A-Za-z\\s\\.\\-]*",
+                    "err": "Please enter a valid name.",
+                },
+            },
         )
 
     def test_cli(self) -> None:
