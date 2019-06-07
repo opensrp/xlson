@@ -20,18 +20,20 @@ LABEL = "label"
 NAME = "name"
 TITLE = "title"
 TYPE = "type"
+
 SUPPORTED_QUESTIONS_TYPES = ["text", "group"]
 
 
 class QuestionTypes(Enum):
     """XLSForm question types."""
 
-    TEXT = "text"
-    GROUP = "group"
-    PHOTO = "photo"
-    INTEGER = "integer"
-    GPS = "geopoint"
     BARCODE = "barcode"
+    GEOPOINT = "geopoint"
+    GROUP = "group"
+    INTEGER = "integer"
+    PHOTO = "photo"
+    SELECT_ONE = "select one"
+    TEXT = "text"
 
 
 class NativeFormField(dict):
@@ -143,6 +145,35 @@ class BarcodeField(NativeFormField):
         super(BarcodeField, self).__init__(**params)
 
 
+class NativeRadioField(NativeFormField):
+    """Native form native radio field."""
+
+    field_type: str = "native_radio"
+
+    FIELDS = NativeFormField.FIELDS.copy()
+    FIELDS.update({"label": str, "options": str})
+
+    def __init__(self, **kwargs: Dict) -> None:
+        assert LABEL in kwargs, "'%s' is a required field." % LABEL
+        assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
+        params: Dict[str, Any] = kwargs.copy()
+
+        if CHILDREN in params:
+            params["options"] = []
+            for child in params[CHILDREN]:
+                options_data = {
+                    "key": child["name"],
+                    "openmrs_entity": "",
+                    "openmrs_entity_id": child["instance"]["openmrs_entity_id"],
+                    "openmrs_entity_parent": "",
+                    "text": child["label"],
+                }
+                params["options"].append(options_data)
+            params.pop("children")
+
+        super(NativeRadioField, self).__init__(**params)
+
+
 class Step(dict):
     """Native form step section."""
 
@@ -171,10 +202,12 @@ def build_field(options: Dict) -> Dict:
         field = ChooseImageField(**options)
     elif options[TYPE] == QuestionTypes.INTEGER.value:
         field = IntegerField(**options)
-    elif options[TYPE] == QuestionTypes.GPS.value:
+    elif options[TYPE] == QuestionTypes.GEOPOINT.value:
         field = GpsField(**options)
     elif options[TYPE] == QuestionTypes.BARCODE.value:
         field = BarcodeField(**options)
+    elif options[TYPE] == QuestionTypes.SELECT_ONE.value:
+        field = NativeRadioField(**options)
 
     return field
 

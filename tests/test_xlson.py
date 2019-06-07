@@ -175,6 +175,53 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_native_radio_field(self) -> None:
+        """Test xlson.build_field() - returns a native form native radio field dict"""
+        options = {
+            "name": "user_select",
+            "label": "Is the child happy?",
+            "type": "select one",
+            "children": [
+                {
+                    "name": "yes",
+                    "label": "Yes",
+                    "instance": {"openmrs_entity_id": "AABB"},
+                },
+                {
+                    "name": "no",
+                    "label": "No",
+                    "instance": {"openmrs_entity_id": "BBCC"},
+                },
+            ],
+        }  # noqa
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_select",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "native_radio",
+                "label": "Is the child happy?",
+                "options": [
+                    {
+                        "key": "yes",
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "",
+                        "openmrs_entity_id": "AABB",
+                        "text": "Yes",
+                    },
+                    {
+                        "key": "no",
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "",
+                        "openmrs_entity_id": "BBCC",
+                        "text": "No",
+                    },
+                ],
+            },  # noqa
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()
