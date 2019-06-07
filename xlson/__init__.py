@@ -30,6 +30,7 @@ class QuestionTypes(Enum):
     GROUP = "group"
     PHOTO = "photo"
     INTEGER = "integer"
+    GPS = "geopoint"
 
 
 class NativeFormField(dict):
@@ -84,7 +85,7 @@ class ChooseImageField(NativeFormField):
     def __init__(self, **kwargs: Dict) -> None:
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         params = kwargs.copy()
-        params["uploadButtonText"] = kwargs.pop(LABEL)
+        params["uploadButtonText"] = params.pop(LABEL)
         super(ChooseImageField, self).__init__(**params)
 
 
@@ -101,7 +102,25 @@ class IntegerField(NativeFormField):
         params: Dict[str, Any] = kwargs.copy()
         params[HINT] = params.pop(LABEL)
         params["edit_type"] = "number"
+
         super(IntegerField, self).__init__(**params)
+
+
+class GpsField(NativeFormField):
+    """Native form gps field."""
+
+    field_type: str = "gps"
+
+    FIELDS = NativeFormField.FIELDS.copy()
+    FIELDS.update({"openmrs_data_type": str})
+
+    def __init__(self, **kwargs: Dict) -> None:
+        assert LABEL in kwargs, "'%s' is a required field." % LABEL
+        params: Dict[str, Any] = kwargs.copy()
+        # Include the openmrs_data_type field
+        params["openmrs_data_type"] = "text"
+
+        super(GpsField, self).__init__(**params)
 
 
 class Step(dict):
@@ -132,6 +151,8 @@ def build_field(options: Dict) -> Dict:
         field = ChooseImageField(**options)
     elif options[TYPE] == QuestionTypes.INTEGER.value:
         field = IntegerField(**options)
+    elif options[TYPE] == QuestionTypes.GPS.value:
+        field = GpsField(**options)
 
     return field
 
