@@ -153,6 +153,28 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_barcode_field(self) -> None:
+        """Test xlson.build_field() - returns a native form barcode field dict"""
+        options = {
+            "name": "user_qrcode",
+            "label": "User ID",
+            "hint": "Scan QR code",
+            "type": "barcode",
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_qrcode",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "barcode",
+                "barcode_type": "qrcode",
+                "hint": "User ID",
+                "scanButtonText": "Scan QR code",
+            },
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()
