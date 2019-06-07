@@ -222,6 +222,31 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },  # noqa
         )
 
+    def test_required_field(self) -> None:
+        """Test xlson.build_field() - returns a native form required field dict"""
+        options = {
+            "name": "first_name",
+            "label": "What's your name?",
+            "type": "text",
+            "bind": {
+                "required": "yes",
+                "jr:requiredMsg": "Please enter the first name.",
+            },
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "first_name",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "edit_text",
+                "hint": "What's your name?",
+                "edit_type": "name",
+                "v_required": {"value": "true", "err": "Please enter the first name."},
+            },
+        )
+
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()

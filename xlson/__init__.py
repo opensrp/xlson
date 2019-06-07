@@ -20,8 +20,9 @@ LABEL = "label"
 NAME = "name"
 TITLE = "title"
 TYPE = "type"
-
 SUPPORTED_QUESTIONS_TYPES = ["text", "group"]
+
+BIND_CONVERSTION = {"yes": "true", "Yes": "true", "no": "false", "No": "false"}
 
 
 class QuestionTypes(Enum):
@@ -57,6 +58,18 @@ class NativeFormField(dict):
 
         elements[KEY] = kwargs[NAME]
         elements[TYPE] = self.field_type
+
+        if "bind" in kwargs:
+            bind_dict: Dict[str, Any] = kwargs.get("bind", {})
+
+            for key, value in bind_dict.items():
+                # Handle bind::required value conversion
+                if value in BIND_CONVERSTION:
+                    val = BIND_CONVERSTION[value]
+                    elements["v_required"] = {
+                        "value": val,
+                        "err": bind_dict.get("jr:requiredMsg"),
+                    }
 
         super(NativeFormField, self).__init__(**elements)
 
