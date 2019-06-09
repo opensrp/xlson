@@ -34,6 +34,7 @@ class QuestionTypes(Enum):
     INTEGER = "integer"
     PHOTO = "photo"
     SELECT_ONE = "select one"
+    SELECT_MULTIPLE = "select all that apply"
     TEXT = "text"
 
 
@@ -187,6 +188,32 @@ class NativeRadioField(NativeFormField):
         super(NativeRadioField, self).__init__(**params)
 
 
+class SpinnerField(NativeFormField):
+    """Native form spinner field."""
+
+    field_type: str = "spinner"
+
+    FIELDS = NativeFormField.FIELDS.copy()
+    FIELDS.update({"values": str, "keys": str, "openmrs_choice_ids": str, "hint": str})
+
+    def __init__(self, **kwargs: Dict) -> None:
+        assert LABEL in kwargs, "'%s' is a required field." % LABEL
+        assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
+        params: Dict[str, Any] = kwargs.copy()
+        params[HINT] = params.pop(LABEL)
+
+        params["keys"] = [child["name"] for child in params[CHILDREN]]
+        params["values"] = [child["label"] for child in params[CHILDREN]]
+        choice_ids_options = [
+            child["instance"]["openmrs_entity_id"] for child in params[CHILDREN]
+        ]
+        params["openmrs_choice_ids"] = {
+            k: v for k, v in zip(params["keys"], choice_ids_options)
+        }
+
+        super(SpinnerField, self).__init__(**params)
+
+
 class Step(dict):
     """Native form step section."""
 
@@ -221,6 +248,8 @@ def build_field(options: Dict) -> Dict:
         field = BarcodeField(**options)
     elif options[TYPE] == QuestionTypes.SELECT_ONE.value:
         field = NativeRadioField(**options)
+    elif options[TYPE] == QuestionTypes.SELECT_MULTIPLE.value:
+        field = SpinnerField(**options)
 
     return field
 

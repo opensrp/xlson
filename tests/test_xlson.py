@@ -58,7 +58,7 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
         )
 
     def test_edit_text_field(self) -> None:
-        """Test xlson.build_field() - returns a native form field dict"""
+        """Test xlson.build_field() - returns a native form field dict."""
         options = {"name": "first_name", "label": "What's your name?", "type": "text"}
         self.assertDictEqual(
             xlson.build_field(options),
@@ -104,7 +104,7 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
         )
 
     def test_choose_image_field(self) -> None:
-        """Test xlson.build_field() - returns a native form choose_image field dict"""
+        """Test xlson.build_field() - returns a native form choose_image field dict."""
         options = {
             "name": "user_image",
             "label": "Take a photo of the child.",
@@ -123,7 +123,7 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
         )
 
     def test_number_field(self) -> None:
-        """Test xlson.build_field() - returns a native form integer field dict"""
+        """Test xlson.build_field() - returns a native form integer field dict."""
         options = {"name": "user_age", "label": "User age", "type": "integer"}
         self.assertDictEqual(
             xlson.build_field(options),
@@ -245,6 +245,55 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                 "edit_type": "name",
                 "v_required": {"value": "true", "err": "Please enter the first name."},
             },
+        )
+
+    def test_spinner_field(self) -> None:
+        """Test xlson.build_field() - returns a native form spinner field dict."""
+        options = {
+            "name": "user_spinner",
+            "label": "What is the mood?",
+            "type": "select all that apply",
+            "children": [
+                {
+                    "name": "happy",
+                    "label": "Happy",
+                    "instance": {
+                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "sad",
+                    "label": "Sad",
+                    "instance": {
+                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "somber",
+                    "label": "Somber",
+                    "instance": {
+                        "openmrs_entity_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+            ],
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_spinner",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "spinner",
+                "hint": "What is the mood?",
+                "values": ["Happy", "Sad", "Somber"],
+                "keys": ["happy", "sad", "somber"],
+                "openmrs_choice_ids": {
+                    "happy": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "sad": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "somber": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+            },  # noqa
         )
 
     def test_cli(self) -> None:
