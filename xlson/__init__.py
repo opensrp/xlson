@@ -32,6 +32,7 @@ class QuestionTypes(Enum):
     GEOPOINT = "geopoint"
     GROUP = "group"
     INTEGER = "integer"
+    METADATA = "metadata"
     PHOTO = "photo"
     SELECT_ONE = "select one"
     SELECT_MULTIPLE = "select all that apply"
@@ -261,14 +262,74 @@ def create_native_form(survey: Dict) -> Dict:
     assert TYPE in survey
     assert CHILDREN in survey
     assert len(survey[CHILDREN]) > 1 and survey[CHILDREN][0]
-
-    data = {"encounter_type": survey[TITLE]}
+    metadata = generate_metadata()
+    data = {"encounter_type": survey[TITLE], "metadata": metadata}
     for child in survey[CHILDREN]:
         is_a_group = child.get(TYPE) == QuestionTypes.GROUP.value
         if is_a_group and child.get(NAME) != "meta":
             data.update(build_field(child))
 
     return data
+
+
+def generate_metadata() -> Dict:
+    """Create a native form metadata dict."""
+    metadata: Dict[str, Any] = {}
+    inner_attributes = [
+        "start",
+        "end",
+        "today",
+        "deviceid",
+        "subscriberid",
+        "simserial",
+        "phonenumber",
+    ]
+    meta_look_up = {"entity_id": "", "value": ""}
+    for attribute in inner_attributes:
+
+        openmrs_data_type = attribute
+        atrribute_key = "{}".format(attribute)
+        attribute_data = {
+            "openmrs_entity_parent": "",
+            "openmrs_entity": "concept",
+            "openmrs_data_type": openmrs_data_type,
+        }
+
+        # Include openmrs_entity_id attribute
+        # for all inner attributes
+
+        if atrribute_key == "start":
+            attribute_data.update(
+                {"openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+            )
+        elif atrribute_key == "end":
+            attribute_data.update(
+                {"openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+            )
+        elif atrribute_key == "today":
+            attribute_data["openmrs_entity_id"] = "encounter_date"
+            attribute_data["openmrs_entity"] = "encounter"
+            attribute_data.pop("openmrs_data_type")
+        elif atrribute_key == "deviceid":
+            attribute_data.update(
+                {"openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+            )
+        elif atrribute_key == "subscriberid":
+            attribute_data.update(
+                {"openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+            )
+        elif atrribute_key == "phonenumber":
+            attribute_data.update(
+                {"openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+            )
+        else:
+            continue
+
+        metadata[atrribute_key] = attribute_data
+
+    metadata["encounter_location"] = ""
+    metadata["look_up"] = meta_look_up
+    return metadata
 
 
 @click.command()

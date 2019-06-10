@@ -40,17 +40,56 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             xlson.create_native_form(survey.to_json_dict()),
             {
                 "encounter_type": "Sample",
+                "metadata": {
+                    "start": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "concept",
+                        "openmrs_data_type": "start",
+                        "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    },
+                    "end": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "concept",
+                        "openmrs_data_type": "end",
+                        "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    },
+                    "today": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "encounter",
+                        "openmrs_entity_id": "encounter_date",
+                    },
+                    "deviceid": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "concept",
+                        "openmrs_data_type": "deviceid",
+                        "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    },
+                    "subscriberid": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "concept",
+                        "openmrs_data_type": "subscriberid",
+                        "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    },
+                    "phonenumber": {
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "concept",
+                        "openmrs_data_type": "phonenumber",
+                        "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    },
+                    "encounter_location": "",
+                    "look_up": {"entity_id": "", "value": ""},
+                },
                 "step1": {
                     "title": "Patient Information",
                     "fields": [
                         {
-                            "edit_type": "name",
-                            "hint": "What's your name?",
                             "key": "first_name",
+                            "type": "edit_text",
                             "openmrs_entity": "",
                             "openmrs_entity_id": "",
                             "openmrs_entity_parent": "",
-                            "type": "edit_text",
+                            "edit_type": "name",
+                            "hint": "What's your name?",
                         }
                     ],
                 },
@@ -305,17 +344,56 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
 
         sample_native_form = {
             "encounter_type": "sample",
+            "metadata": {
+                "start": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "concept",
+                    "openmrs_data_type": "start",
+                    "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+                "end": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "concept",
+                    "openmrs_data_type": "end",
+                    "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+                "today": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "encounter",
+                    "openmrs_entity_id": "encounter_date",
+                },
+                "deviceid": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "concept",
+                    "openmrs_data_type": "deviceid",
+                    "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+                "subscriberid": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "concept",
+                    "openmrs_data_type": "subscriberid",
+                    "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+                "phonenumber": {
+                    "openmrs_entity_parent": "",
+                    "openmrs_entity": "concept",
+                    "openmrs_data_type": "phonenumber",
+                    "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                },
+                "encounter_location": "",
+                "look_up": {"entity_id": "", "value": ""},
+            },
             "step1": {
                 "title": "Patient Information",
                 "fields": [
                     {
-                        "edit_type": "name",
-                        "hint": "What's your first name?",
                         "key": "first_name",
+                        "type": "edit_text",
                         "openmrs_entity": "",
                         "openmrs_entity_id": "",
                         "openmrs_entity_parent": "",
-                        "type": "edit_text",
+                        "edit_type": "name",
+                        "hint": "What's your first name?",
                     }
                 ],
             },
