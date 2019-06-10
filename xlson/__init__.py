@@ -20,6 +20,8 @@ LABEL = "label"
 NAME = "name"
 TITLE = "title"
 TYPE = "type"
+CONSTRAINT = "constraint"
+REQUIRED = "required"
 SUPPORTED_QUESTIONS_TYPES = ["text", "group"]
 
 BIND_CONVERSTION = {"yes": "true", "Yes": "true", "no": "false", "No": "false"}
@@ -64,8 +66,18 @@ class NativeFormField(dict):
             bind_dict: Dict[str, Any] = kwargs.get("bind", {})
 
             for key, value in bind_dict.items():
+                # Handle bind::constraint field
+                if key == CONSTRAINT:
+                    if value.startswith("regex"):
+                        val = value.split("'")
+                        regex_val = val[1]
+                        elements["v_regex"] = {
+                            "value": regex_val,
+                            "err": bind_dict.get("jr:constraintMsg"),
+                        }
+
                 # Handle bind::required value conversion
-                if value in BIND_CONVERSTION:
+                if key == REQUIRED and value in BIND_CONVERSTION:
                     val = BIND_CONVERSTION[value]
                     elements["v_required"] = {
                         "value": val,
