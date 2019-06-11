@@ -22,7 +22,16 @@ TITLE = "title"
 TYPE = "type"
 CONSTRAINT = "constraint"
 REQUIRED = "required"
-SUPPORTED_QUESTIONS_TYPES = ["barcode", "geopoint", "group", "integer", "photo", "text", "select one", "select all that apply"]
+SUPPORTED_QUESTIONS_TYPES = [
+    "barcode",
+    "geopoint",
+    "group",
+    "integer",
+    "photo",
+    "text",
+    "select one",
+    "select all that apply",
+]
 
 BIND_CONVERSTION = {"yes": "true", "Yes": "true", "no": "false", "No": "false"}
 
