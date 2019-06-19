@@ -32,7 +32,8 @@ Installation
 ############
 
 ``xlson`` can be installed by running ``python setup.py install``. It requires Python 3.6.0+.
-Consider using a `virtualenv <http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/>`_ and `virtualenvwrapper <https://virtualenvwrapper.readthedocs.io/en/latest/>`_ to make dependency management easier
+Consider using a `virtualenv <http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/>`_ and `virtualenvwrapper <https://virtualenvwrapper.readthedocs.io/en/latest/>`_
+to make dependency management easier
 
     pip install virtualenv
     pip install virtualenvwrapper
