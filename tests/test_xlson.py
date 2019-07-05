@@ -295,6 +295,38 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                 },
             },  # noqa
         )
+    def test_spinner_field_KeyError(self) -> None:
+        """Test xlson.build_field() - returns a native form spinner field dict."""
+        options = {
+           "name": "user_spinner",
+            "label": "What is the mood?",
+            "type": "select all that apply",
+            "children": [
+                {
+                    "name": "happy",
+                    "label": "Happy",
+                    "instance": {
+                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "sad",
+                    "label": "Sad",
+                    "instance": {
+                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "somber",
+                    "label": "Somber",
+                    "instance": {
+                    },
+                },
+            ],
+        }
+
+        with self.assertRaises(KeyError):
+            xlson.build_field(options)
 
     def test_constraint_field_with_regex_value(self) -> None:
         """Test xlson.build_field() - returns a native form constraint field dict."""
