@@ -295,10 +295,11 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                 },
             },  # noqa
         )
+
     def test_spinner_field_KeyError(self) -> None:
         """Test xlson.build_field() - returns a native form spinner field dict."""
         options = {
-           "name": "user_spinner",
+            "name": "user_spinner",
             "label": "What is the mood?",
             "type": "select all that apply",
             "children": [
@@ -316,12 +317,7 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                         "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                     },
                 },
-                {
-                    "name": "somber",
-                    "label": "Somber",
-                    "instance": {
-                    },
-                },
+                {"name": "somber", "label": "Somber", "instance": {}},
             ],
         }
 
