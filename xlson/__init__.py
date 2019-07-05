@@ -225,6 +225,7 @@ class SpinnerField(NativeFormField):
 
         params["keys"] = [child["name"] for child in params[CHILDREN]]
         params["values"] = [child["label"] for child in params[CHILDREN]]
+
         try:
 
             choice_ids_options = [
@@ -233,9 +234,9 @@ class SpinnerField(NativeFormField):
             params["openmrs_choice_ids"] = {
                 k: v for k, v in zip(params["keys"], choice_ids_options)
             }
-        except KeyError:
-
-            raise KeyError(" openmrs_entity_id is not defined in your choices sheet.")
+        except KeyError as error:
+            error.args += ("Missing  openmrs_entity_id in choices sheet",)
+            raise
 
         super(SpinnerField, self).__init__(**params)
 
@@ -287,7 +288,6 @@ def create_native_form(survey: Dict) -> Dict:
     assert TYPE in survey
     assert CHILDREN in survey
     assert len(survey[CHILDREN]) > 1 and survey[CHILDREN][0]
-
     data = {"encounter_type": survey[TITLE]}
     for child in survey[CHILDREN]:
         is_a_group = child.get(TYPE) == QuestionTypes.GROUP.value
@@ -306,7 +306,3 @@ def cli(xlsform: BinaryIO) -> None:
     )
     form = create_native_form(survey.to_json_dict())
     click.echo(json.dumps(form, indent=4))
-
-
-if __name__ == "__main__":
-    cli()
