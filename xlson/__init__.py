@@ -307,6 +307,3 @@ def cli(xlsform: BinaryIO) -> None:
     form = create_native_form(survey.to_json_dict())
     click.echo(json.dumps(form, indent=4))
 
-
-if __name__ == "__main__":
-    cli()
