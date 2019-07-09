@@ -218,6 +218,7 @@ class SpinnerField(NativeFormField):
     FIELDS.update({"values": str, "keys": str, "openmrs_choice_ids": str, "hint": str})
 
     def __init__(self, **kwargs: Dict) -> None:
+
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
         params: Dict[str, Any] = kwargs.copy()
@@ -225,6 +226,7 @@ class SpinnerField(NativeFormField):
 
         params["keys"] = [child["name"] for child in params[CHILDREN]]
         params["values"] = [child["label"] for child in params[CHILDREN]]
+
         try:
 
             choice_ids_options = [
@@ -233,9 +235,9 @@ class SpinnerField(NativeFormField):
             params["openmrs_choice_ids"] = {
                 k: v for k, v in zip(params["keys"], choice_ids_options)
             }
-        except KeyError:
-
-            raise KeyError(" openmrs_entity_id is not defined in your choices sheet.")
+        except KeyError as error:
+            error.args += ('Missing  openmrs_entity_id in choices sheet',)
+            raise
 
         super(SpinnerField, self).__init__(**params)
 
@@ -290,6 +292,7 @@ def create_native_form(survey: Dict) -> Dict:
 
     data = {"encounter_type": survey[TITLE]}
     for child in survey[CHILDREN]:
+
         is_a_group = child.get(TYPE) == QuestionTypes.GROUP.value
         if is_a_group and child.get(NAME) != "meta":
             data.update(build_field(child))
@@ -300,10 +303,10 @@ def create_native_form(survey: Dict) -> Dict:
 @click.command()
 @click.argument("xlsform", type=click.File(mode="rb"))
 def cli(xlsform: BinaryIO) -> None:
+
     """xlson - XLSForm to native form JSON."""
     survey = create_survey_element_from_dict(
         parse_file_to_json(xlsform.name, file_object=xlsform)
     )
     form = create_native_form(survey.to_json_dict())
     click.echo(json.dumps(form, indent=4))
-
