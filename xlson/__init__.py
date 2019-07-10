@@ -225,12 +225,18 @@ class SpinnerField(NativeFormField):
 
         params["keys"] = [child["name"] for child in params[CHILDREN]]
         params["values"] = [child["label"] for child in params[CHILDREN]]
-        choice_ids_options = [
-            child["instance"]["openmrs_entity_id"] for child in params[CHILDREN]
-        ]
-        params["openmrs_choice_ids"] = {
-            k: v for k, v in zip(params["keys"], choice_ids_options)
-        }
+
+        try:
+
+            choice_ids_options = [
+                child["instance"]["openmrs_entity_id"] for child in params[CHILDREN]
+            ]
+            params["openmrs_choice_ids"] = {
+                k: v for k, v in zip(params["keys"], choice_ids_options)
+            }
+        except KeyError as error:
+            error.args += ("Missing  openmrs_entity_id in choices sheet",)
+            raise
 
         super(SpinnerField, self).__init__(**params)
 
