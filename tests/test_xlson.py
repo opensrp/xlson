@@ -73,6 +73,36 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_instance_in_Form_field(self) -> None:
+        options = {
+            'name': 'user_first_name',
+            'label': 'User First name',
+            'hint': 'Please use from id',
+            'type': 'text',
+            'bind': {
+                'required': 'Yes'
+                },
+            'instance': {
+                'openmrs_entity': 'encounter',
+                'openmrs_entity_parent': 'jack',
+                'openmrs_entity_id': '165257AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+                }
+            }
+        
+        self.assertDictEqual(
+            xlson.EditTextField(**options),{
+                'key': 'user_first_name',
+                'type': 'edit_text',
+                'openmrs_entity': 'encounter',
+                'openmrs_entity_id': '165257AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                'openmrs_entity_parent': 'jack', 
+                'edit_type': 'name',
+                'hint': 'User First name',
+                'v_required': {
+                    'value': 'true',
+                    'err': None}}
+            )
+        
     def test_group_field(self) -> None:
         """Test a native form step structure."""
         step = {
@@ -296,8 +326,8 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },  # noqa
         )
 
-        def test_for_keyerror_in_spinner_field(self) -> None:
-            """Test xlson.build_field()-raise KeyError for empty openmrs entity id in choices."""
+    def test_for_keyerror_in_spinner_field(self) -> None:
+        """Test xlson.build_field()-raise KeyError for empty openmrs entity id in choices."""
 
         options = {
             "name": "user_spinner",
@@ -321,7 +351,6 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                 {"name": "somber", "label": "Somber"},
             ],
         }
-
         with self.assertRaises(KeyError):
             xlson.build_field(options)
 
@@ -352,7 +381,6 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                 },
             },
         )
-
     def test_cli(self) -> None:
         """Test xlson.cli command"""
         runner = CliRunner()

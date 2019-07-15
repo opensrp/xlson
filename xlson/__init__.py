@@ -32,6 +32,7 @@ SUPPORTED_QUESTIONS_TYPES = [
     "select one",
     "select all that apply",
 ]
+INSTANCE = "instance"
 
 BIND_CONVERSTION = {"yes": "true", "Yes": "true", "no": "false", "No": "false"}
 
@@ -63,6 +64,7 @@ class NativeFormField(dict):
     }
 
     def __init__(self, **kwargs: Dict) -> None:
+
         assert NAME in kwargs, "'%s' is a required field." % KEY
         elements: Dict[str, Any] = {}
         for key, default in self.FIELDS.items():
@@ -70,6 +72,18 @@ class NativeFormField(dict):
 
         elements[KEY] = kwargs[NAME]
         elements[TYPE] = self.field_type
+        if "instance" in kwargs:
+            instance: Dict[str, Any] = kwargs.get("instance")
+            for key, value in instance.items():
+                # import pdb;pdb.set_trace()
+                if key == "openmrs_entity":
+                    elements["openmrs_entity"] = instance.get("openmrs_entity")
+                elif key == "openmrs_entity_id":
+                    elements["openmrs_entity_id"] = instance["openmrs_entity_id"]
+                elif key == "openmrs_entity_parent":
+                    elements["openmrs_entity_parent"] = instance[
+                        "openmrs_entity_parent"
+                    ]
 
         if "bind" in kwargs:
             bind_dict: Dict[str, Any] = kwargs.get("bind", {})
@@ -82,7 +96,7 @@ class NativeFormField(dict):
                         regex_val = val[1]
                         elements["v_regex"] = {
                             "value": regex_val,
-                            "err": bind_dict.get("jr:constraintMsg"),
+                            "err": bind_dict.get("jr:constraintMsg", ""),
                         }
 
                 # Handle bind::required value conversion
@@ -90,9 +104,10 @@ class NativeFormField(dict):
                     val = BIND_CONVERSTION[value]
                     elements["v_required"] = {
                         "value": val,
-                        "err": bind_dict.get("jr:requiredMsg"),
+                        "err": bind_dict.get("jr:requiredMsg", ""),
                     }
-
+    
+        
         super(NativeFormField, self).__init__(**elements)
 
 
@@ -124,7 +139,7 @@ class ChooseImageField(NativeFormField):
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         params = kwargs.copy()
         params["uploadButtonText"] = params.pop(LABEL)
-
+    
         super(ChooseImageField, self).__init__(**params)
 
 
@@ -142,6 +157,7 @@ class IntegerField(NativeFormField):
         params[HINT] = params.pop(LABEL)
         params["edit_type"] = "number"
 
+    
         super(IntegerField, self).__init__(**params)
 
 
@@ -192,7 +208,6 @@ class NativeRadioField(NativeFormField):
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
         params: Dict[str, Any] = kwargs.copy()
-
         if CHILDREN in params:
             params["options"] = []
             for child in params[CHILDREN]:
@@ -277,6 +292,7 @@ def build_field(options: Dict) -> Dict:
         field = NativeRadioField(**options)
     elif options[TYPE] == QuestionTypes.SELECT_MULTIPLE.value:
         field = SpinnerField(**options)
+        
 
     return field
 
@@ -294,7 +310,7 @@ def create_native_form(survey: Dict) -> Dict:
         is_a_group = child.get(TYPE) == QuestionTypes.GROUP.value
         if is_a_group and child.get(NAME) != "meta":
             data.update(build_field(child))
-
+    
     return data
 
 
@@ -307,3 +323,8 @@ def cli(xlsform: BinaryIO) -> None:
     )
     form = create_native_form(survey.to_json_dict())
     click.echo(json.dumps(form, indent=4))
+
+
+
+if __name__ == "__main__":
+    cli()
