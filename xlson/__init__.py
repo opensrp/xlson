@@ -15,9 +15,11 @@ from pyxform.xls2json import parse_file_to_json
 CHILDREN = "children"
 FIELDS = "fields"
 HINT = "hint"
+INSTANCE = "instance"
 KEY = "key"
 LABEL = "label"
 NAME = "name"
+OPENMRS_ENTITY_ID = "openmrs_entity_id"
 TITLE = "title"
 TYPE = "type"
 CONSTRAINT = "constraint"
@@ -58,7 +60,7 @@ class NativeFormField(dict):
         KEY: str,
         TYPE: str,
         "openmrs_entity": str,
-        "openmrs_entity_id": str,
+        OPENMRS_ENTITY_ID: str,
         "openmrs_entity_parent": str,
     }
 
@@ -199,7 +201,7 @@ class NativeRadioField(NativeFormField):
                 options_data = {
                     "key": child["name"],
                     "openmrs_entity": "",
-                    "openmrs_entity_id": child["instance"]["openmrs_entity_id"],
+                    OPENMRS_ENTITY_ID: child[INSTANCE][OPENMRS_ENTITY_ID],
                     "openmrs_entity_parent": "",
                     "text": child["label"],
                 }
@@ -226,7 +228,9 @@ class SpinnerField(NativeFormField):
         params["keys"] = [child["name"] for child in params[CHILDREN]]
         params["values"] = [child["label"] for child in params[CHILDREN]]
         choice_ids_options = [
-            child["instance"]["openmrs_entity_id"] for child in params[CHILDREN]
+            child[INSTANCE][OPENMRS_ENTITY_ID]
+            for child in params[CHILDREN]
+            if INSTANCE in child and OPENMRS_ENTITY_ID in child[INSTANCE]
         ]
         params["openmrs_choice_ids"] = {
             k: v for k, v in zip(params["keys"], choice_ids_options)

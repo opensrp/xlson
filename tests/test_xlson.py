@@ -249,6 +249,33 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
 
     def test_spinner_field(self) -> None:
         """Test xlson.build_field() - returns a native form spinner field dict."""
+        # Without openmrs_entity_id
+        options = {
+            "name": "user_spinner",
+            "label": "What is the mood?",
+            "type": "select all that apply",
+            "children": [
+                {"name": "happy", "label": "Happy"},
+                {"name": "sad", "label": "Sad"},
+                {"name": "somber", "label": "Somber"},
+            ],
+        }
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_spinner",
+                "openmrs_choice_ids": {},
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "spinner",
+                "hint": "What is the mood?",
+                "values": ["Happy", "Sad", "Somber"],
+                "keys": ["happy", "sad", "somber"],
+            },  # noqa
+        )
+
+        # With openmrs_entity_id
         options = {
             "name": "user_spinner",
             "label": "What is the mood?",
