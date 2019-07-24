@@ -296,6 +296,35 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },  # noqa
         )
 
+        def test_for_keyerror_in_spinner_field(self) -> None:
+            """Test xlson.build_field()-raise KeyError for empty openmrs entity id in choices."""
+
+        options = {
+            "name": "user_spinner",
+            "label": "What is the mood?",
+            "type": "select all that apply",
+            "children": [
+                {
+                    "name": "happy",
+                    "label": "Happy",
+                    "instance": {
+                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "sad",
+                    "label": "Sad",
+                    "instance": {
+                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {"name": "somber", "label": "Somber"},
+            ],
+        }
+
+        with self.assertRaises(KeyError):
+            xlson.build_field(options)
+
     def test_constraint_field_with_regex_value(self) -> None:
         """Test xlson.build_field() - returns a native form constraint field dict."""
         options = {
