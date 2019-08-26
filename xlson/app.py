@@ -26,17 +26,22 @@ class UploadFile(forms.Form):
 
     def clean_files(self) -> Any:
         """clean data recieved from the upload form """
+
         content_types = settings.CONTENT_TYPES
         upload_size = settings.MAX_UPLOAD_SIZE
+        size_error = settings.FILESIZE_ERROR
+        type_error = settings.FILETYPE_ERROR
+        upload = settings.SUCCESFULL_UPLOAD
+
         files = self.cleaned_data.get("files")
         ext = os.path.splitext(files.name)[-1]
         file_size = files.size
         if ext in content_types:
             if file_size >= upload_size:
-                raise Exception(settings.FILESIZE_ERROR)
+                raise Exception(size_error)
         else:
-            raise Exception(settings.FILETYPE_ERROR)
-        return settings.SUCCESFULL_UPLOAD
+            raise Exception(type_error)
+        return upload
 
 
 @route("", name="UploadFile")  # pylint: disable=too-many-ancestors
