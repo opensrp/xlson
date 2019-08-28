@@ -8,11 +8,12 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django_micro import configure, route, run
 
-CONTENT_TYPES = [".xlsx", ".xls"]
+EXTENSION_TYPES = [".xlsx", ".xls"]
 MAX_UPLOAD_SIZE = 10485760
 FILETYPE_ERROR = "wrong file type"
 FILESIZE_ERROR = "file too large"
 SUCCESFULL_UPLOAD = "File has been uploaded"
+UPLOAD_FILES = "files"
 
 
 DEBUG = True
@@ -27,10 +28,10 @@ class UploadFile(forms.Form):
     def clean_files(self) -> Any:
         """clean data recieved from the upload form """
 
-        files = self.cleaned_data.get("files")
+        files = self.cleaned_data.get(settings.UPLOAD_FILES)
         ext = os.path.splitext(files.name)[-1]
         file_size = files.size
-        if ext in settings.CONTENT_TYPES:
+        if ext in settings.EXTENSION_TYPES:
             if file_size >= settings.MAX_UPLOAD_SIZE:
                 raise Exception(settings.FILESIZE_ERROR)
         else:
