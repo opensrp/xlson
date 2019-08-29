@@ -52,7 +52,7 @@ class UploadView(FormView):  # pylint: disable=too-many-ancestors
     success_url = reverse_lazy("UploadFile")
 
     def form_valid(self, form: Any) -> HttpResponse:
-        """ handle post requests """
+        """ print the file output to the terminal """
         output = self.handle_uploaded_file(form.files["files"])
         print(output)
         return HttpResponse("file succesfully processed")
