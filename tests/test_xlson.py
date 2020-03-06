@@ -247,6 +247,53 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
+    def test_checkbox_field(self) -> None:
+        """Test xlson.build_field() - returns a native form checkbox field dict."""
+        # Without openmrs_entity_id
+        options = {
+            "name": "colours",
+            "label": "Choose colours you like?",
+            "type": "select all that apply",
+            "children": [
+                {"name": "red", "label": "REd"},
+                {"name": "green", "label": "Green"},
+                {"name": "yellow", "label": "Yellow"},
+            ],
+        }
+        selected = False
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "colours",
+                "openmrs_choice_ids": {},
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "checkbox",
+                "label": "Choose colours you like?",
+                 "options": [
+                    {
+                        "key": "red",
+                        "text": "Red",
+                        "value": selected,
+                        "openmrs_choice_id": ""
+                    },
+                    {
+                        "key": "green",
+                        "text": "Green",
+                        "value": selected,
+                        "openmrs_choice_id": "",
+                    },
+                    {
+                        "key": "yellow",
+                        "text": "Yellow",
+                        "value": selected,
+                        "openmrs_choice_id": "",
+                    }
+                ]
+            },  # noqa
+        )
+
     def test_spinner_field(self) -> None:
         """Test xlson.build_field() - returns a native form spinner field dict."""
         # Without openmrs_entity_id
