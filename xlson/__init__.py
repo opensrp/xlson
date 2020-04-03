@@ -20,6 +20,7 @@ KEY = "key"
 LABEL = "label"
 NAME = "name"
 OPENMRS_ENTITY_ID = "openmrs_entity_id"
+OPENMRS_CHOICE_ID = "openmrs_choice_id"
 TITLE = "title"
 TYPE = "type"
 CONSTRAINT = "constraint"
@@ -211,32 +212,33 @@ class NativeRadioField(NativeFormField):
         super(NativeRadioField, self).__init__(**params)
 
 
-class SpinnerField(NativeFormField):
-    """Native form spinner field."""
+class CheckboxField(NativeFormField):
+    """Native form Checkbox Field (Multi-select field)."""
 
-    field_type: str = "spinner"
+    field_type: str = "check_box"
 
     FIELDS = NativeFormField.FIELDS.copy()
-    FIELDS.update({"values": str, "keys": str, "openmrs_choice_ids": str, "hint": str})
+    FIELDS.update({"label": str, "options": str})
 
     def __init__(self, **kwargs: Dict) -> None:
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
         params: Dict[str, Any] = kwargs.copy()
-        params[HINT] = params.pop(LABEL)
 
-        params["keys"] = [child["name"] for child in params[CHILDREN]]
-        params["values"] = [child["label"] for child in params[CHILDREN]]
-        choice_ids_options = [
-            child[INSTANCE][OPENMRS_ENTITY_ID]
-            for child in params[CHILDREN]
-            if INSTANCE in child and OPENMRS_ENTITY_ID in child[INSTANCE]
-        ]
-        params["openmrs_choice_ids"] = {
-            k: v for k, v in zip(params["keys"], choice_ids_options)
-        }
+        if CHILDREN in params:
+            selected = False
+            params["options"] = []
+            for child in params[CHILDREN]:
+                options_data = {
+                    "key": child["name"],
+                    OPENMRS_CHOICE_ID: child[INSTANCE][OPENMRS_ENTITY_ID],
+                    "text": child["label"],
+                    "value": selected,
+                }
+                params["options"].append(options_data)
+            params.pop("children")
 
-        super(SpinnerField, self).__init__(**params)
+        super(CheckboxField, self).__init__(**params)
 
 
 class Step(dict):
@@ -274,7 +276,7 @@ def build_field(options: Dict) -> Dict:
     elif options[TYPE] == QuestionTypes.SELECT_ONE.value:
         field = NativeRadioField(**options)
     elif options[TYPE] == QuestionTypes.SELECT_MULTIPLE.value:
-        field = SpinnerField(**options)
+        field = CheckboxField(**options)
 
     return field
 

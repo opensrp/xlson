@@ -247,79 +247,50 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },
         )
 
-    def test_spinner_field(self) -> None:
-        """Test xlson.build_field() - returns a native form spinner field dict."""
+    def test_checkbox_field(self) -> None:
+        """Test xlson.build_field() - returns a native form checkbox field dict."""
         # Without openmrs_entity_id
         options = {
-            "name": "user_spinner",
-            "label": "What is the mood?",
-            "type": "select all that apply",
-            "children": [
-                {"name": "happy", "label": "Happy"},
-                {"name": "sad", "label": "Sad"},
-                {"name": "somber", "label": "Somber"},
-            ],
-        }
-        self.assertDictEqual(
-            xlson.build_field(options),
-            {
-                "key": "user_spinner",
-                "openmrs_choice_ids": {},
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "spinner",
-                "hint": "What is the mood?",
-                "values": ["Happy", "Sad", "Somber"],
-                "keys": ["happy", "sad", "somber"],
-            },  # noqa
-        )
-
-        # With openmrs_entity_id
-        options = {
-            "name": "user_spinner",
-            "label": "What is the mood?",
+            "name": "colours",
+            "label": "Choose colours you like?",
             "type": "select all that apply",
             "children": [
                 {
-                    "name": "happy",
-                    "label": "Happy",
-                    "instance": {
-                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                    },
+                    "name": "ze_gree",
+                    "label": "Green",
+                    "instance": {"openmrs_entity_id": "AABBGRR"},
                 },
                 {
-                    "name": "sad",
-                    "label": "Sad",
-                    "instance": {
-                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                    },
-                },
-                {
-                    "name": "somber",
-                    "label": "Somber",
-                    "instance": {
-                        "openmrs_entity_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                    },
+                    "name": "ze_yellow",
+                    "label": "Yellow",
+                    "instance": {"openmrs_entity_id": "BBCCYLL"},
                 },
             ],
         }
+        selected = False
         self.assertDictEqual(
             xlson.build_field(options),
             {
-                "key": "user_spinner",
+                "key": "colours",
                 "openmrs_entity_parent": "",
                 "openmrs_entity": "",
                 "openmrs_entity_id": "",
-                "type": "spinner",
-                "hint": "What is the mood?",
-                "values": ["Happy", "Sad", "Somber"],
-                "keys": ["happy", "sad", "somber"],
-                "openmrs_choice_ids": {
-                    "happy": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "sad": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "somber": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                },
+                "type": "check_box",
+                "label": "Choose colours you like?",
+                "options": [
+                    {
+                        "key": "ze_gree",
+                        "text": "Green",
+                        "openmrs_choice_id": "AABBGRR",
+                        "value": selected,
+                    },
+                    {
+                        "key": "ze_yellow",
+                        "text": "Yellow",
+                        "openmrs_choice_id": "BBCCYLL",
+                        "value": selected,
+                    },
+                ],
             },  # noqa
         )
 
