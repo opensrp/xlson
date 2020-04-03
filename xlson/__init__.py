@@ -211,6 +211,7 @@ class NativeRadioField(NativeFormField):
 
         super(NativeRadioField, self).__init__(**params)
 
+
 class CheckboxField(NativeFormField):
     """Native form Checkbox Field (Multi-select field)."""
 
@@ -238,6 +239,7 @@ class CheckboxField(NativeFormField):
             params.pop("children")
 
         super(CheckboxField, self).__init__(**params)
+
 
 class Step(dict):
     """Native form step section."""

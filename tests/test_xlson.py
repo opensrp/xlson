@@ -282,15 +282,15 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
                         "key": "ze_gree",
                         "text": "Green",
                         "openmrs_choice_id": "AABBGRR",
-                        "value": selected
+                        "value": selected,
                     },
                     {
                         "key": "ze_yellow",
                         "text": "Yellow",
                         "openmrs_choice_id": "BBCCYLL",
-                        "value": selected
-                    }
-                ]
+                        "value": selected,
+                    },
+                ],
             },  # noqa
         )
 
