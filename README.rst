@@ -23,7 +23,7 @@ xlson - Converts an OpenSRP data dictionary XLSForm into native form JSON.
 Get the code
 --------------
 
-git clone git@github.com:OpenSRP/xlson.git
+``git clone git@github.com:OpenSRP/xlson.git``
 
 ----------------------
 Installation and Usage
