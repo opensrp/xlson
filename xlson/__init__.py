@@ -183,18 +183,25 @@ class BarcodeField(NativeFormField):
         super(BarcodeField, self).__init__(**params)
 
 
-class NativeRadioField(NativeFormField):
-    """Native form native radio field."""
-
-    field_type: str = "native_radio"
-
-    FIELDS = NativeFormField.FIELDS.copy()
-    FIELDS.update({"label": str, "options": str})
+class SelectOneField(NativeFormField):
+    """
+    Native form native radio field
+    Spinner native radio field
+    """
 
     def __init__(self, **kwargs: Dict) -> None:
+        self.FIELDS = NativeFormField.FIELDS.copy()  # pylint: disable=C0103
+        self.FIELDS.update({"label": str, "options": str, "hint": str})
         assert LABEL in kwargs, "'%s' is a required field." % LABEL
         assert CHILDREN in kwargs, "'%s' is a required field." % CHILDREN
         params: Dict[str, Any] = kwargs.copy()
+
+        if HINT in params.keys():
+            self.field_type: str = "spinner"
+            self.FIELDS.pop(LABEL)
+        else:
+            self.field_type: str = "native_radio"
+            self.FIELDS.pop(HINT)
 
         if CHILDREN in params:
             params["options"] = []
@@ -209,7 +216,7 @@ class NativeRadioField(NativeFormField):
                 params["options"].append(options_data)
             params.pop("children")
 
-        super(NativeRadioField, self).__init__(**params)
+        super(SelectOneField, self).__init__(**params)
 
 
 class CheckboxField(NativeFormField):
@@ -274,7 +281,7 @@ def build_field(options: Dict) -> Dict:
     elif options[TYPE] == QuestionTypes.BARCODE.value:
         field = BarcodeField(**options)
     elif options[TYPE] == QuestionTypes.SELECT_ONE.value:
-        field = NativeRadioField(**options)
+        field = SelectOneField(**options)
     elif options[TYPE] == QuestionTypes.SELECT_MULTIPLE.value:
         field = CheckboxField(**options)
 

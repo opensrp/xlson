@@ -222,6 +222,72 @@ class TestXLSon(PyxformMarkdown, unittest.TestCase):
             },  # noqa
         )
 
+    def test_spinner_field(self) -> None:
+        """Test xlson.build_field() - returns a native form spinner field dict."""
+        options = {
+            "name": "user_spinner",
+            "label": "What is the mood?",
+            "type": "select one",
+            "hint": "What is the mood?",
+            "children": [
+                {
+                    "name": "happy",
+                    "label": "Happy",
+                    "instance": {
+                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "sad",
+                    "label": "Sad",
+                    "instance": {
+                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+                {
+                    "name": "somber",
+                    "label": "Somber",
+                    "instance": {
+                        "openmrs_entity_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    },
+                },
+            ],
+        }  # noqa
+        self.assertDictEqual(
+            xlson.build_field(options),
+            {
+                "key": "user_spinner",
+                "openmrs_entity_parent": "",
+                "openmrs_entity": "",
+                "openmrs_entity_id": "",
+                "type": "spinner",
+                "hint": "What is the mood?",
+                "options": [
+                    {
+                        "key": "happy",
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "",
+                        "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "text": "Happy",
+                    },
+                    {
+                        "key": "sad",
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "",
+                        "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "text": "Sad",
+                    },
+                    {
+                        "key": "somber",
+                        "openmrs_entity_parent": "",
+                        "openmrs_entity": "",
+                        "openmrs_entity_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "text": "Somber",
+                    },
+                ],
+            },  # noqa
+        )
+
     def test_required_field(self) -> None:
         """Test xlson.build_field() - returns a native form required field dict."""
         options = {
