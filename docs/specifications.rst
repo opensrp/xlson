@@ -301,18 +301,77 @@ The resulting native form JSON is::
      ]
    }
 
-Spinner Field
+CheckBox Field
 -------------
 
-The ``spinner`` field is XLSForm's ``select multiple`` type.
+The ``CheckBox`` field is XLSForm's ``select multiple`` type.
 
 survey sheet
 
-+------------------------+--------------+------------------------------+
-| type                   | name         | label                        |
-+========================+==============+==============================+
-| select multiple moods  | user_spinner | What is the mood?            |
-+------------------------+--------------+------------------------------+
++------------------------+------------- -+--------------------+
+| type                   | name          | label              |
++========================+===============+====================+
+| select multiple moods  | user_checkbox | What is the mood?  |
++------------------------+---------------+--------------------+
+
+choices sheet
+
++-------------------+-------------+---------+---------------------------------------+
+| list name         | name        | label   | instance::openmrs_entity_id           |
++===================+=============+=========+=======================================+
+| moods             | happy       | Happy   | 1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
++-------------------+-------------+---------+---------------------------------------+
+| moods             | sad         | Sad     | 1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
++-------------------+-------------+---------+---------------------------------------+
+| moods             | somber      | Somber  | 2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
++-------------------+-------------+---------+---------------------------------------+
+
+The resulting native form JSON is::
+
+   {
+     "key": "user_checkbox",
+     "openmrs_entity_parent": "",
+     "openmrs_entity": "",
+     "openmrs_entity_id": "",
+     "type": "check_box",
+     "hint": "What is the mood?",
+      "options": [
+         {
+            "key": "happy",
+            "openmrs_entity": "",
+            "openmrs_choice_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Happy"
+         },
+         {
+            "key": "sad",
+            "openmrs_entity": "",
+            "openmrs_choice_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Sad"
+         },
+          {
+            "key": "somber",
+            "openmrs_entity": "",
+            "openmrs_choice_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Somber"
+         }
+      ]
+   }
+
+Spinner Field
+-------------
+
+The ``spinner`` field is XLSForm's ``select one`` type.
+
+survey sheet
+
++------------------+--------------+--------------------+--------------------+
+| type             | name         | label              | hint               |
++==================+==============+====================+====================+
+| select one mood  | user_spinner | What is the mood?  | What is the mood?  |
++------------------+--------------+--------------------+--------------------+
 
 choices sheet
 
@@ -335,21 +394,29 @@ The resulting native form JSON is::
      "openmrs_entity_id": "",
      "type": "spinner",
      "hint": "What is the mood?",
-     "values": [
-       "Happy",
-       "Sad",
-       "Somber"
-     ],
-     "keys": [
-       "happy",
-       "sad",
-       "somber"
-     ],
-     "openmrs_choice_ids": {
-       "happy": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-       "sad": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-       "somber": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-     }
+      "options": [
+         {
+            "key": "happy",
+            "openmrs_entity": "",
+            "openmrs_entity_id": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Happy"
+         },
+         {
+            "key": "sad",
+            "openmrs_entity": "",
+            "openmrs_entity_id": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Sad"
+         },
+          {
+            "key": "somber",
+            "openmrs_entity": "",
+            "openmrs_entity_id": "2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "openmrs_entity_parent": "",
+            "text": "Somber"
+         }
+      ]
    }
 
 Barcode Field
