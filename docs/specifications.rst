@@ -308,11 +308,12 @@ The ``CheckBox`` field is XLSForm's ``select multiple`` type.
 
 survey sheet
 
-+------------------------+------------- -+--------------------+
-| type                   | name          | label              |
-+========================+===============+====================+
-| select multiple moods  | user_checkbox | What is the mood?  |
-+------------------------+---------------+--------------------+
++------------------------------+----------------+--------------------+
+| type                         | name           | label              |
++==============================+================+====================+
+| select all that apply moods  | user_checkbox  | What is the mood?  |
++------------------------------+----------------+--------------------+
+
 
 choices sheet
 
@@ -378,11 +379,11 @@ choices sheet
 +-------------------+-------------+---------+---------------------------------------+
 | list name         | name        | label   | instance::openmrs_entity_id           |
 +===================+=============+=========+=======================================+
-| moods             | happy       | Happy   | 1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
+| mood              | happy       | Happy   | 1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
 +-------------------+-------------+---------+---------------------------------------+
-| moods             | sad         | Sad     | 1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
+| mood              | sad         | Sad     | 1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
 +-------------------+-------------+---------+---------------------------------------+
-| moods             | somber      | Somber  | 2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
+| mood              | somber      | Somber  | 2113AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  |
 +-------------------+-------------+---------+---------------------------------------+
 
 The resulting native form JSON is::
